@@ -50,6 +50,10 @@ inputs:
     description: 'Directory to change to before pushing.'
     required: false
     default: '.'
+  atomic:
+    description: 'Determines if atomic push is used (defaults to false)'
+    required: false
+
 runs:
   using: 'node20'
   main: 'start.js'

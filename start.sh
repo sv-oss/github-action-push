@@ -3,6 +3,7 @@ set -e
 
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
+INPUT_ATOMIC=${INPUT_ATOMIC:-false}
 INPUT_AUTHOR_EMAIL=${INPUT_AUTHOR_EMAIL:-'github-actions[bot]@users.noreply.github.com'}
 INPUT_AUTHOR_NAME=${INPUT_AUTHOR_NAME:-'github-actions[bot]'}
 INPUT_COAUTHOR_EMAIL=${INPUT_COAUTHOR_EMAIL:-''}
@@ -22,6 +23,10 @@ echo "Push to branch $INPUT_BRANCH";
     echo 'Missing input "github_token: ${{ secrets.GITHUB_TOKEN }}".';
     exit 1;
 };
+
+if ${INPUT_ATOMIC}; then
+    _ATOMIC_OPTION='--atomic'
+fi
 
 if ${INPUT_EMPTY}; then
     _EMPTY='--allow-empty'
@@ -71,4 +76,4 @@ if ${INPUT_REBASE}; then
     git pull --rebase
 fi
 
-git push "${remote_repo}" HEAD:"${INPUT_BRANCH}" --follow-tags $_FORCE_OPTION $_TAGS;
+git push "${remote_repo}" HEAD:"${INPUT_BRANCH}" $_ATOMIC_OPTION --follow-tags $_FORCE_OPTION $_TAGS;
