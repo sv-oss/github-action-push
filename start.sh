@@ -72,8 +72,13 @@ else
     git commit -m "${INPUT_MESSAGE}" $_EMPTY || exit 0
 fi
 
+for i in 1 2 3 4 5; do
+
+delay=$(((RANDOM % $i) + $i))
+
 if ${INPUT_REBASE}; then
     git pull --rebase
 fi
 
-git push "${remote_repo}" HEAD:"${INPUT_BRANCH}" $_ATOMIC_OPTION --follow-tags $_FORCE_OPTION $_TAGS;
+git push "${remote_repo}" HEAD:"${INPUT_BRANCH}" $_ATOMIC_OPTION --follow-tags $_FORCE_OPTION $_TAGS && break || sleep $delay
+done
